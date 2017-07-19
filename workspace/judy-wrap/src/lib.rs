@@ -23,4 +23,5 @@ use ::std::ptr::null_mut;
 include!("Judy1.rs");
 include!("JudyBoxMap.rs");
 include!("JudyBoxMapIterator.rs");
+include!("JudyBoxMapMutIterator.rs");
 include!("JudyL.rs");

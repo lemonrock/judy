@@ -45,6 +45,19 @@ impl<'a, T> IntoIterator for &'a JudyBoxMap<T>
 	}
 }
 
+impl<'a, T> IntoIterator for &'a mut JudyBoxMap<T>
+{
+    type Item = &'a mut T;
+    
+	type IntoIter = JudyBoxMapMutIterator<'a, T>;
+	
+	#[inline(always)]
+    fn into_iter(self) -> Self::IntoIter
+	{
+		JudyBoxMapMutIterator::new(self)
+	}
+}
+
 impl<T> JudyBoxMap<T>
 {
 	#[inline(always)]
@@ -57,6 +70,23 @@ impl<T> JudyBoxMap<T>
 	pub fn countRange(&self, fromIndexInclusive: c_ulong, toIndexInclusive: c_ulong) -> c_ulong
 	{
 		self.0.countRange(fromIndexInclusive, toIndexInclusive)
+	}
+	
+	#[inline(always)]
+	pub fn get_or_insert<'a, F: FnOnce() -> T>(&'a mut self, index: c_ulong, default: F) -> &'a mut T
+	{
+		let pointerToValue = self.0.insert(index);
+		if (unsafe { *pointerToValue }).is_null()
+		{
+			let mutableReference = Box::into_raw(Box::new(default()));
+			unsafe { *pointerToValue = mutableReference as *mut _ };
+			unsafe { &mut *mutableReference }
+		}
+		else
+		{
+			let mutableReference = unsafe { *pointerToValue } as *mut T;
+			unsafe { &mut *mutableReference }
+		}
 	}
 	
 	#[inline(always)]
