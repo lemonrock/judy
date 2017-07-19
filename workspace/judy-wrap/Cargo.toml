@@ -20,4 +20,4 @@ version = "0.0.2"
 
 [dependencies]
 libc = "0.2"
-judy-sys = { path = "../judy-sys", version = "0.0.1" }
+judy-sys = { path = "../judy-sys", version = "0.0.2" }
