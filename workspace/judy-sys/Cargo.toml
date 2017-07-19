@@ -1,0 +1,24 @@
+# This file is part of judy. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/judy/master/COPYRIGHT. No part of judy-sys, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
+# Copyright © 2017 The developers of judy. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/judy/master/COPYRIGHT.
+
+
+[package]
+name = "judy-sys"
+description = "Low-level Judy array FFI binding"
+keywords = ["data-structures", "collections", "judy", "array", "sparse"]
+categories = ["data-structures", "external-ffi-bindings"]
+license = "MIT"
+authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]
+documentation = "https://github.com/lemonrock/judy/blob/master/README.md"
+homepage = "https://github.com/lemonrock/judy-sys"
+repository = "https://github.com/lemonrock/judy.git"
+exclude = ["*"]
+include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "benches/**/*.rs", "examples/**/*.rs", "tests/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml", "lib/**/*", "src/**/*.h", "tools/**/*", "bindgen-wrapper.conf.d/**/*", "compile-*.conf.d/**/*"]
+build = "src/build.rs"
+# Relative to Cargo.toml
+readme = "README.md"
+publish = false
+version = "0.0.1"
+
+[dependencies]
+libc = "0.2"

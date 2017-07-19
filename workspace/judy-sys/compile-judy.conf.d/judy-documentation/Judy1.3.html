@@ -1,0 +1,391 @@
+<!-- Creator     : groff version 1.19.2 -->
+<!-- CreationDate: Wed Jul 19 12:44:43 2017 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p     { margin-top: 0; margin-bottom: 0; }
+       pre   { margin-top: 0; margin-bottom: 0; }
+       table { margin-top: 0; margin-bottom: 0; }
+</style>
+<title>Judy1</title>
+
+</head>
+<body>
+
+<h1 align=center>Judy1</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#ERRORS: See: Judy_3.htm#ERRORS">ERRORS: See: Judy_3.htm#ERRORS</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<a name="NAME"></a>
+<h2>NAME</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Judy1 macros -
+C library for creating and accessing a dynamic array of
+bits, using any value of a word as an index.</p>
+
+<a name="SYNOPSIS"></a>
+<h2>SYNOPSIS</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>cc
+[flags]</big></b> <big><i>sourcefiles</i>
+<b>-lJudy</b></big></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><big><b>#include
+&lt;Judy.h&gt;</b></big></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>int Rc_int;
+// return code - integer <br>
+Word_t Rc_word; // return code - unsigned word <br>
+Word_t Index, Index1, Index2, Nth;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Pvoid_t
+PJ1Array = (Pvoid_t) NULL; // initialize Judy1 array</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>J1S( Rc_int,
+PJ1Array, Index); // Judy1Set() <br>
+J1U( Rc_int, PJ1Array, Index); // Judy1Unset() <br>
+J1T( Rc_int, PJ1Array, Index); // Judy1Test() <br>
+J1C( Rc_word, PJ1Array, Index1, Index2); // Judy1Count()
+<br>
+J1BC(Rc_int, PJ1Array, Nth, Index); // Judy1ByCount() <br>
+J1FA(Rc_word, PJ1Array); // Judy1FreeArray() <br>
+J1MU(Rc_word, PJ1Array); // Judy1MemUsed() <br>
+J1F( Rc_int, PJ1Array, Index); // Judy1First() <br>
+J1N( Rc_int, PJ1Array, Index); // Judy1Next() <br>
+J1L( Rc_int, PJ1Array, Index); // Judy1Last() <br>
+J1P( Rc_int, PJ1Array, Index); // Judy1Prev() <br>
+J1FE(Rc_int, PJ1Array, Index); // Judy1FirstEmpty() <br>
+J1NE(Rc_int, PJ1Array, Index); // Judy1NextEmpty() <br>
+J1LE(Rc_int, PJ1Array, Index); // Judy1LastEmpty() <br>
+J1PE(Rc_int, PJ1Array, Index); // Judy1PrevEmpty()</b></p>
+
+<a name="DESCRIPTION"></a>
+<h2>DESCRIPTION</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A Judy1 array
+is the equivalent of a bit array or bit map. A bit is
+addressed by an <b>Index</b> (key). The array may be sparse,
+and the <b>Index</b> may be any word-sized <b>Value</b>. If
+an index is present, it represents a set bit (a bit set
+represents an index present). If an index is absent, it
+represents an unset bit (a bit unset represents an absent
+index).</p>
+
+<p style="margin-left:11%; margin-top: 1em">A Judy1 array
+is allocated with a <b>NULL</b> pointer</p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>Pvoid_t
+PJ1Array = (Pvoid_t) NULL;</big> <br>
+Memory to support the array is allocated as bits are set,
+and released as bits are unset. If the Judy1 pointer
+(<b>PJ1Array</b>) is NULL, all bits are unset (and the Judy1
+array requires no memory).</p>
+
+<p style="margin-left:11%; margin-top: 1em">As with an
+ordinary array, a Judy1 array contains no duplicate
+indexes.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using the
+macros described here, rather than the <b>Judy1 function
+calls</b>, the default error handling sends a message to the
+standard error and terminates the program with
+<b>exit(1)</b>. For other error handling methods, see the
+<i>ERRORS</i> section.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Because the
+macro forms are sometimes faster and have a simpler error
+handling interface than the equivalent <i>functions</i>,
+they are the preferred way of calling the Judy1 functions.
+<b><br>
+J1S(Rc_int, PJ1Array, Index);</b> // <b>Judy1Set()</b></p>
+
+<p style="margin-left:34%;">Set <b>Index</b>&rsquo;s bit in
+the Judy1 array <b>PJ1Array</b>.</p>
+
+<p style="margin-left:34%; margin-top: 1em">Return
+<b>Rc_int</b> set to 1 if <b>Index</b>&rsquo;s bit was
+previously unset (successful), otherwise 0 if the bit was
+already set (unsuccessful).</p>
+
+<p style="margin-left:11%;"><b>J1U(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1Unset()</b></p>
+
+<p style="margin-left:34%;">Unset <b>Index</b>&rsquo;s bit
+in the Judy1 array <b>PJ1Array</b>; that is, remove
+<b>Index</b> from the Judy1 array.</p>
+
+<p style="margin-left:34%; margin-top: 1em">Return
+<b>Rc_int</b> set to 1 if <b>Index</b>&rsquo;s bit was
+previously set (successful), otherwise 0 if the bit was
+already unset (unsuccessful).</p>
+
+<p style="margin-left:11%;"><b>J1T(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1Test()</b></p>
+
+<p style="margin-left:34%;">Test if <b>Index</b>&rsquo;s
+bit is set in the Judy1 array <b>PJ1Array</b>.</p>
+
+<p style="margin-left:34%; margin-top: 1em">Return
+<b>Rc_int</b> set to 1 if <b>Index</b>&rsquo;s bit is set
+(<b>Index</b> is present), 0 if it is unset (<b>Index</b> is
+absent).</p>
+
+<p style="margin-left:11%;"><b>J1C(Rc_word, PJ1Array,
+Index1, Index2);</b> // <b>Judy1Count()</b></p>
+
+<p style="margin-left:34%;">Count the number of indexes
+present in the Judy1 array <b>PJ1Array</b> between
+<b>Index1</b> and <b>Index2</b> (inclusive).</p>
+
+<p style="margin-left:34%; margin-top: 1em">Return
+<b>Rc_word</b> set to the count. A return <b>Value</b> of 0
+can be valid as a count, or it can indicate a special case
+for fully populated array (32-bit machines only). See
+<b>Judy1Count()</b> for ways to resolve this.</p>
+
+<p style="margin-left:34%; margin-top: 1em">To count all
+indexes present (population) in a Judy1 bit array, use:</p>
+
+
+<p style="margin-left:34%; margin-top: 1em"><big>J1C(Rc_word,
+PJ1Array, 0, -1);</big> <b><br>
+Note:</b> The -1 promotes to the maximum index, that is, all
+ones.</p>
+
+<p style="margin-left:11%;"><b>J1BC(Rc_int, PJ1Array, Nth,
+Index);</b> // <b>Judy1ByCount()</b></p>
+
+<p style="margin-left:34%;">Locate the <b>Nth</b> index
+that is present in the Judy1 array <b>PJ1Array</b>
+(<b>Nth</b> = 1 returns the first index present). To refer
+to the last index in a fully populated array (all indexes
+present, which is rare), use <b>Nth</b> = 0.</p>
+
+<p style="margin-left:34%; margin-top: 1em">Return
+<b>Rc_int</b> set to 1 and <b>Index</b> set to the
+<b>Nth</b> index if found, otherwise return <b>Rc_int</b>
+set to 0 (the <b>Value</b> of <b>Index</b> contains no
+useful information).</p>
+
+<p style="margin-left:11%;"><b>J1FA(Rc_word, PJ1Array);</b>
+// <b>Judy1FreeArray()</b></p>
+
+<p style="margin-left:34%;">Free the entire Judy1 array
+<b>PJ1Array</b> (much faster than using a <b>J1N()</b>,
+<b>J1U()</b> loop).</p>
+
+<p style="margin-left:34%; margin-top: 1em">Return
+<b>Rc_word</b> set to the number of bytes freed, and
+<b>PJ1Array</b> set to <b>NULL</b>.</p>
+
+<p style="margin-left:11%;"><b>J1MU(Rc_word, PJ1Array);</b>
+// <b>Judy1MemUsed()</b></p>
+
+<p style="margin-left:34%;">Return <b>Rc_word</b> set to
+the number of bytes of memory currently in use by Judy1
+array <b>PJ1Array</b>. This is a very fast routine, and may
+be used after a <b>J1S()</b> or <b>J1U()</b> call with
+little performance impact.</p>
+
+<p style="margin-left:11%;"><b>Judy1 Search
+Functions</b></p>
+
+<p style="margin-left:34%;">The Judy1 search functions
+allow you to search for set or unset bits in the array. You
+may search inclusively or exclusively, in either forward or
+reverse directions. All of the search functions use a
+similar calling sequence. <b>Rc_int</b> is returned set to 1
+for a successful search and the found <b>Index</b> is
+returned. <b>Rc_int</b> is returned set to 0 for an
+unsuccessful search, and <b>Index</b> contains no useful
+information. The return code <b>Rc_int</b> must be checked
+prior to using the returned <b>Index</b>, since a search
+failure is possible.</p>
+
+<p style="margin-left:11%;"><b>J1F(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1First()</b></p>
+
+<p style="margin-left:34%;">Search (inclusive) for the
+first index present that is equal to or greater than the
+passed <b>Index</b>. (Start with <b>Index</b> = 0 to find
+the first index in the array.) <b>J1F()</b> is typically
+used to <i>begin</i> a sorted-order scan of the indexes
+present in a Judy1 array.</p>
+
+<p style="margin-left:11%;"><b>J1N(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1Next()</b></p>
+
+<p style="margin-left:34%;">Search (exclusive) for the next
+index present that is greater than the passed <b>Index</b>.
+<b>J1N()</b> is typically used to <i>continue</i> a
+sorted-order scan of the indexes present in a Judy1 array,
+or to locate a &quot;neighbor&quot; of a given index.</p>
+
+<p style="margin-left:11%;"><b>J1L(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1Last()</b></p>
+
+<p style="margin-left:34%;">Search (inclusive) for the last
+index present that is equal to or less than the passed
+<b>Index</b>. (Start with <b>Index</b> = -1, that is, all
+ones, to find the last index in the array.) <b>J1L()</b> is
+typically used to <i>begin</i> a reverse-sorted-order scan
+of the indexes present in a Judy1 array.</p>
+
+<p style="margin-left:11%;"><b>J1P(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1Prev()</b></p>
+
+<p style="margin-left:34%;">Search (exclusive) for the
+previous index present that is less than the passed
+<b>Index</b>. <b>J1P()</b> is typically used to
+<i>continue</i> a reverse-sorted-order scan of the indexes
+present in a Judy1 array, or to locate a
+&quot;neighbor&quot; of a given index.</p>
+
+<p style="margin-left:11%;"><b>J1FE(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1FirstEmpty()</b></p>
+
+<p style="margin-left:34%;">Search (inclusive) for the
+first absent index that is equal to or greater than the
+passed <b>Index</b>. (Start with <b>Index</b> = 0 to find
+the first index absent in the array.)</p>
+
+<p style="margin-left:11%;"><b>J1NE(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1NextEmpty()</b></p>
+
+<p style="margin-left:34%;">Search (exclusive) for the next
+absent index that is greater than the passed
+<b>Index</b>.</p>
+
+<p style="margin-left:11%;"><b>J1LE(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1LastEmpty()</b></p>
+
+<p style="margin-left:34%;">Search (inclusive) for the last
+absent index that is equal to or less than the passed
+<b>Index</b>. (Start with <b>Index</b> = -1 to find the last
+index absent in the array.)</p>
+
+<p style="margin-left:11%;"><b>J1PE(Rc_int, PJ1Array,
+Index);</b> // <b>Judy1PrevEmpty()</b></p>
+
+<p style="margin-left:34%;">Search (exclusive) for the
+previous absent index that is less than the passed
+<b>Index</b>.</p>
+
+<a name="ERRORS: See: Judy_3.htm#ERRORS"></a>
+<h2>ERRORS: See: Judy_3.htm#ERRORS</h2>
+
+
+<a name="EXAMPLE"></a>
+<h2>EXAMPLE</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">In the
+following example, errors in the <b>J1S()</b> or
+<b>J1U()</b> calls go to a user-defined procedure,
+process_malloc_failure. This is not needed when you use the
+default <b>JUDYERROR()</b> macro, since the default causes
+your program to exit on all failures, including
+<i>malloc()</i> failure.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><big>#include
+&lt;stdio.h&gt; <br>
+#include &lt;Judy.h&gt;</big></p>
+
+<p style="margin-left:11%; margin-top: 1em">int main() //
+Example program of Judy1 macro APIs <br>
+{ <br>
+Word_t Index; // index (or key) <br>
+Word_t Rcount; // count of indexes (or bits set) <br>
+Word_t Rc_word; // full word return value <br>
+int Rc_int; // boolean values returned (0 or 1)</p>
+
+<p style="margin-left:11%; margin-top: 1em">Pvoid_t
+PJ1Array = (Pvoid_t) NULL; // initialize Judy1 array</p>
+
+<p style="margin-left:11%; margin-top: 1em">Index = 123456;
+<br>
+J1S(Rc_int, J1Array, Index); // set bit at 123456 <br>
+if (Rc_int == JERR) goto process_malloc_failure; <br>
+if (Rc_int == 1) printf(&quot;OK - bit successfully set at
+%lu\n&quot;, Index); <br>
+if (Rc_int == 0) printf(&quot;BUG - bit already set at
+%lu\n&quot;, Index);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Index = 654321;
+<br>
+J1T(Rc_int, J1Array, Index); // test if bit set at 654321
+<br>
+if (Rc_int == 1) printf(&quot;BUG - set bit at %lu\n&quot;,
+Index); <br>
+if (Rc_int == 0) printf(&quot;OK - bit not set at
+%lu\n&quot;, Index);</p>
+
+<p style="margin-left:11%; margin-top: 1em">J1C(Rcount,
+J1Array, 0, -1); // count all bits set in array <br>
+printf(&quot;%lu bits set in Judy1 array\n&quot;,
+Rcount);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Index = 0; <br>
+J1F(Rc_int, J1Array, Index); // find first bit set in array
+<br>
+if (Rc_int == 1) printf(&quot;OK - first bit set is at
+%lu\n&quot;, Index); <br>
+if (Rc_int == 0) printf(&quot;BUG - no bits set in
+array\n&quot;);</p>
+
+<p style="margin-left:11%; margin-top: 1em">J1MU(Rc_word,
+J1Array); // how much memory was used? <br>
+printf(&quot;%lu Indexes used %lu bytes of memory\n&quot;,
+Rcount, Rc_word);</p>
+
+<p style="margin-left:11%; margin-top: 1em">Index = 123456;
+<br>
+J1U(Rc_int, J1Array, Index); // unset bit at 123456 <br>
+if (Rc_int == JERR) goto process_malloc_failure; <br>
+if (Rc_int == 1) printf(&quot;OK - bit successfully unset at
+%lu\n&quot;, Index); <br>
+if (Rc_int == 0) printf(&quot;BUG - bit was not set at
+%lu\n&quot;, Index);</p>
+
+<p style="margin-left:11%; margin-top: 1em">return(0); <br>
+}</p>
+
+<a name="AUTHOR"></a>
+<h2>AUTHOR</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Judy was
+invented by Doug Baskins and implemented by
+Hewlett-Packard.</p>
+
+<a name="SEE ALSO"></a>
+<h2>SEE ALSO</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Judy</i>(3),
+<i>JudyL</i>(3), <i>JudySL</i>(3), <i>JudyHS</i>(3), <i><br>
+malloc()</i>, <br>
+the Judy website, <i>http://judy.sourceforge.net</i>, for
+more information and Application Notes.</p>
+<hr>
+</body>
+</html>

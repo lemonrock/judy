@@ -1,0 +1,9 @@
+[submodule ".cargo"]
+	path = .cargo
+	url = https://github.com/lemonrock/.cargo.git
+[submodule "workspace/judy-sys/tools/bindgen-wrapper"]
+	path = workspace/judy-sys/tools/bindgen-wrapper
+	url = https://github.com/lemonrock/bindgen-wrapper.git
+[submodule "workspace/judy-sys/compile-judy.conf.d/config"]
+	path = workspace/judy-sys/compile-judy.conf.d/config
+	url = git://git0.savannah.gnu.org/config.git

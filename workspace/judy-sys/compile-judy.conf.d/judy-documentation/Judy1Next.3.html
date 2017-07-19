@@ -1,0 +1,281 @@
+<!-- Creator     : groff version 1.19.2 -->
+<!-- CreationDate: Wed Jul 19 12:44:44 2017 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p     { margin-top: 0; margin-bottom: 0; }
+       pre   { margin-top: 0; margin-bottom: 0; }
+       table { margin-top: 0; margin-bottom: 0; }
+</style>
+<title>Judy1_funcs</title>
+
+</head>
+<body>
+
+<h1 align=center>Judy1_funcs</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<a name="NAME"></a>
+<h2>NAME</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Judy1 functions
+- C library for creating and accessing a dynamic array of
+bits, using any value of a word as an index</p>
+
+<a name="SYNOPSIS"></a>
+<h2>SYNOPSIS</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>int
+Judy1Set( PPvoid_t PPJ1Array, Word_t Index, PJError_t
+PJError); <br>
+int Judy1Unset( PPvoid_t PPJ1Array, Word_t Index, PJError_t
+PJError); <br>
+int Judy1Test( Pcvoid_t PJ1Array, Word_t Index, PJError_t
+PJError); <br>
+Word_t Judy1Count( Pcvoid_t PJ1Array, Word_t Index1, Word_t
+Index2, PJError_t PJError); <br>
+int Judy1ByCount( Pcvoid_t PJ1Array, Word_t Nth, Word_t *
+PIndex, PJError_t PJError); <br>
+Word_t Judy1FreeArray( PPvoid_t PPJ1Array, PJError_t
+PJError); <br>
+Word_t Judy1MemUsed( Pcvoid_t PJ1Array); <br>
+int Judy1First( Pcvoid_t PJ1Array, Word_t * PIndex,
+PJError_t PJError); <br>
+int Judy1Next( Pcvoid_t PJ1Array, Word_t * PIndex, PJError_t
+PJError); <br>
+int Judy1Last( Pcvoid_t PJ1Array, Word_t * PIndex, PJError_t
+PJError); <br>
+int Judy1Prev( Pcvoid_t PJ1Array, Word_t * PIndex, PJError_t
+PJError); <br>
+int Judy1FirstEmpty(Pcvoid_t PJ1Array, Word_t * PIndex,
+PJError_t PJError); <br>
+int Judy1NextEmpty( Pcvoid_t PJ1Array, Word_t * PIndex,
+PJError_t PJError); <br>
+int Judy1LastEmpty( Pcvoid_t PJ1Array, Word_t * PIndex,
+PJError_t PJError); <br>
+int Judy1PrevEmpty( Pcvoid_t PJ1Array, Word_t * PIndex,
+PJError_t PJError);</big></b></p>
+
+<a name="DESCRIPTION"></a>
+<h2>DESCRIPTION</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A macro
+equivalent exists for each function call. Because the macro
+forms are sometimes faster and have a simpler error handling
+interface than the equivalent functions, they are the
+preferred way of calling the Judy1 functions. See
+<i>Judy1</i>(3) for more information. The function call
+definitions are included here for completeness.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One of the
+difficulties in using the Judy1 function calls lies in
+determining whether to pass a pointer or the address of a
+pointer. Since the functions that modify the Judy1 array
+must also modify the pointer to the Judy1 array, you must
+pass the address of the pointer rather than the pointer
+itself. This often leads to hard-to-debug programmatic
+errors. In practice, the macros allow the compiler to catch
+programming errors when pointers instead of addresses of
+pointers are passed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The Judy1
+function calls have an additional parameter beyond those
+specified in the macro calls. This parameter is either a
+pointer to an error structure, or <b>NULL</b> (in which case
+the detailed error information is not returned).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+following descriptions, the functions are described in terms
+of how the macros use them (only in the case of <b>#define
+JUDYERROR_NOTEST 1</b>). This is the suggested use of the
+macros after your program has been fully debugged. When the
+<b>JUDYERROR_NOTEST</b> macro is not specified, an error
+structure is declared to store error information returned
+from the Judy1 functions when an error occurs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Notice the
+placement of the <b>&amp;</b> in the different functions.
+<b><br>
+Judy1Set(&amp;PJ1Array, Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1S(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1Set(&amp;PJ1Array, Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1Unset(&amp;PJ1Array,
+Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1U(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1Unset(&amp;PJ1Array, Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1Test(PJ1Array, Index,
+&amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1T(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1Test(PJ1Array, Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1Count(PJ1Array, Index1,
+Index2, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1C(Rc_word, PJ1Array, Index1, Index2) \ <br>
+Rc_word = Judy1Count(PJ1Array, Index1, Index2,
+PJE0)</big></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>A return
+value of 0 can be an error, valid as a count, or it can
+indicate a special case for a fully-populated array (32-bit
+machines only). If necessary, the following code can be used
+to disambiguate this return:</big></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>JError_t
+JError;</big></p>
+
+<p style="margin-left:34%; margin-top: 1em">Rc_word =
+Judy1Count(PJ1Array, Index1, Index2, &amp;JError); <br>
+if (Rc_word == 0) <br>
+{ <br>
+if (JU_ERRNO(&amp;JError) == JU_ERRNO_NONE) <br>
+printf(&quot;Judy1 array population == 0\n&quot;); <br>
+if (JU_ERRNO(&amp;JError) == JU_ERRNO_FULL) <br>
+printf(&quot;Judy1 array population == 2^32\n&quot;); <br>
+if (JU_ERRNO(&amp;JError) == JU_ERRNO_NULLPPARRAY) <br>
+goto NullArray; <br>
+if (JU_ERRNO(&amp;JError) &gt; JU_ERRNO_NFMAX) <br>
+goto Null_or_CorruptArray; <br>
+}</p>
+
+<p style="margin-left:11%;"><b>Judy1ByCount(PJ1Array, Nth,
+&amp;Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1BC(Rc_int, PJ1Array, Nth, Index) \ <br>
+Rc_int = Judy1ByCount(PJ1Array, Nth, &amp;Index,
+PJE0)</big></p>
+
+
+<p style="margin-left:11%;"><b>Judy1FreeArray(&amp;PJ1Array,
+&amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1FA(Rc_word, PJ1Array) \ <br>
+Rc_word = Judy1FreeArray(&amp;PJ1Array, PJE0)</big></p>
+
+
+<p style="margin-left:11%;"><b>Judy1MemUsed(PJ1Array)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1MU(Rc_word, PJ1Array) \ <br>
+Rc_word = Judy1MemUsed(PJ1Array)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1First(PJ1Array,
+&amp;Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1F(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1First(PJ1Array, &amp;Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1Next(PJ1Array,
+&amp;Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1N(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1Next(PJ1Array, &amp;Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1Last(PJ1Array,
+&amp;Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1L(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1Last(PJ1Array, &amp;Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1Prev(PJ1Array,
+&amp;Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1P(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1Prev(PJ1Array, &amp;Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1FirstEmpty(PJ1Array,
+&amp;Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1FE(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1FirstEmpty(PJ1Array, &amp;Index,
+PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1NextEmpty(PJ1Array,
+&amp;Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1NE(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1NextEmpty(PJ1Array, &amp;Index,
+PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1LastEmpty(PJ1Array,
+&amp;Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1LE(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1LastEmpty(PJ1Array, &amp;Index,
+PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>Judy1PrevEmpty(PJ1Array,
+&amp;Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+J1PE(Rc_int, PJ1Array, Index) \ <br>
+Rc_int = Judy1PrevEmpty(PJ1Array, &amp;Index,
+PJE0)</big></p>
+
+<p style="margin-left:11%; margin-top: 1em">Definitions for
+all of the Judy functions, the types <b>Pvoid_t</b>,
+<b>Pcvoid_t</b>, <b>PPvoid_t</b>, <b>Word_t</b>,
+<b>JError_t</b>, and <b>PJError_t</b>, the constants
+<b>NULL</b>, <b>JU_ERRNO_*</b>, <b>JERR</b>, and
+<b>PJE0</b>, are provided in the <b>Judy.h</b> header file
+(/usr/include/Judy.h). <b>Note</b>: Callers should define
+Judy1 arrays as type <b>Pvoid_t</b>, which can be passed by
+value to functions that take <b>Pcvoid_t</b> (constant
+<b>Pvoid_t</b>), and also by address to functions that take
+<b>PPvoid_t</b>.</p>
+
+<a name="AUTHOR"></a>
+<h2>AUTHOR</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Judy was
+invented by Doug Baskins and implemented by
+Hewlett-Packard.</p>
+
+<a name="SEE ALSO"></a>
+<h2>SEE ALSO</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Judy</i>(3),
+<i>JudyL</i>(3), <i>JudySL</i>(3), <i>JudyHS</i>(3), <i><br>
+malloc()</i>, <br>
+the Judy website, <i>http://judy.sourceforge.net</i>, for
+more information and Application Notes.</p>
+<hr>
+</body>
+</html>

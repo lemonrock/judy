@@ -1,0 +1,9 @@
+Pcvoid_t
+Pvoid_t
+PPvoid_t
+Word_t
+PJError_t
+PJError
+JError_t
+JU_Errno_t
+J_UDY_ERROR_STRUCT

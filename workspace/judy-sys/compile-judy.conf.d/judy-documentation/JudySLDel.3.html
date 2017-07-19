@@ -1,0 +1,200 @@
+<!-- Creator     : groff version 1.19.2 -->
+<!-- CreationDate: Wed Jul 19 12:44:47 2017 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p     { margin-top: 0; margin-bottom: 0; }
+       pre   { margin-top: 0; margin-bottom: 0; }
+       table { margin-top: 0; margin-bottom: 0; }
+</style>
+<title>JudySL_funcs</title>
+
+</head>
+<body>
+
+<h1 align=center>JudySL_funcs</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<a name="NAME"></a>
+<h2>NAME</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">JudySL
+functions - C library for creating and accessing a dynamic
+array, using a null-terminated string as an index
+(associative array)</p>
+
+<a name="SYNOPSIS"></a>
+<h2>SYNOPSIS</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>PPvoid_t
+JudySLIns( PPvoid_t PPJSLArray, const uint8_t * Index,
+PJError_t PJError); <br>
+int JudySLDel( PPvoid_t PPJSLArray, const uint8_t * Index,
+PJError_t PJError); <br>
+PPvoid_t JudySLGet( Pcvoid_t PJSLArray, const uint8_t *
+Index, PJError_t PJError); <br>
+Word_t JudySLFreeArray(PPvoid_t PPJSLArray, PJError_t
+PJError); <br>
+PPvoid_t JudySLFirst( Pcvoid_t PJSLArray, uint8_t * Index,
+PJError_t PJError); <br>
+PPvoid_t JudySLNext( Pcvoid_t PJSLArray, uint8_t * Index,
+PJError_t PJError); <br>
+PPvoid_t JudySLLast( Pcvoid_t PJSLArray, uint8_t * Index,
+PJError_t PJError); <br>
+PPvoid_t JudySLPrev( Pcvoid_t PJSLArray, uint8_t * Index,
+PJError_t PJError);</big></b></p>
+
+<a name="DESCRIPTION"></a>
+<h2>DESCRIPTION</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A macro
+equivalent exists for each function call. Because the macro
+forms are sometimes faster and have a simpler error handling
+interface than the equivalent functions, they are the
+preferred way of calling the JudySL functions. See
+<i>JudySL</i>(3) for more information. The function call
+definitions are included here for completeness.</p>
+
+<p style="margin-left:11%; margin-top: 1em">One of the
+difficulties in using the JudySL function calls lies in
+determining whether to pass a pointer or the address of a
+pointer. Since the functions that modify the JudySL array
+must also modify the pointer to the JudySL array, you must
+pass the address of the pointer rather than the pointer
+itself. This often leads to hard-to-debug programmatic
+errors. In practice, the macros allow the compiler to catch
+programming errors when pointers instead of addresses of
+pointers are passed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The JudySL
+function calls have an additional parameter beyond those
+specified in the macro calls. This parameter is either a
+pointer to an error structure, or <b>NULL</b> (in which case
+the detailed error information is not returned).</p>
+
+<p style="margin-left:11%; margin-top: 1em">In the
+following descriptions, the functions are described in terms
+of how the macros use them (only in the case of <b>#define
+JUDYERROR_NOTEST 1</b>). This is the suggested use of the
+macros after your program has been fully debugged. When the
+<b>JUDYERROR_NOTEST</b> macro is not specified, an error
+structure is declared to store error information returned
+from the JudySL functions when an error occurs.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Notice the
+placement of the <b>&amp;</b> in the different functions.
+<b><br>
+JudySLIns(&amp;PJSLArray, Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+JSLI(PValue, PJSLArray, Index) \ <br>
+PValue = JudyLIns(&amp;PJSLArray, Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>JudySLDel(&amp;PJSLArray,
+Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+JSLD(Rc_int, PJSLArray, Index) \ <br>
+Rc_int = JudySLDel(&amp;PJSLArray, Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>JudySLGet(PJSLArray, Index,
+&amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+JSLG(PValue, PJSLArray, Index) \ <br>
+PValue = JudySLIns(PJSLArray, Index, PJE0)</big></p>
+
+
+<p style="margin-left:11%;"><b>JudySLFreeArray(&amp;PJSLArray,
+&amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+JSLFA(Rc_word, PJSLArray) \ <br>
+Rc_word = JudySLFreeArray(&amp;PJSLArray, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>JudySLFirst(PJSLArray,
+Index, &amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+JSLF(PValue, PJSLArray, Index) \ <br>
+PValue = JudySLFirst(PJSLArray, Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>JudySLNext(PJSLArray, Index,
+&amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+JSLN(PValue, PJSLArray, Index) \ <br>
+PValue = JudySLNext(PJSLArray, Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>JudySLLast(PJSLArray, Index,
+&amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+JSLL(PValue, PJSLArray, Index) \ <br>
+PValue = JudySLLast(PJSLArray, Index, PJE0)</big></p>
+
+<p style="margin-left:11%;"><b>JudySLPrev(PJSLArray, Index,
+&amp;JError)</b></p>
+
+<p style="margin-left:34%; margin-top: 1em"><big>#define
+JSLP(PValue, PJSLArray, Index) \ <br>
+PValue = JudySLPrev(PJSLArray, Index, PJE0)</big></p>
+
+<p style="margin-left:11%; margin-top: 1em">Definitions for
+all the Judy functions, the types <b>Pvoid_t</b>,
+<b>Pcvoid_t</b>, <b>PPvoid_t</b>, <b>Word_t</b> ,
+<b>JError_t</b>, and <b>PJError_t</b>, the constants
+<b>NULL</b>, <b>JU_ERRNO_*</b>, <b>JERR</b>, <b>PPJERR</b>,
+and <b>PJE0</b> are provided in the <b>Judy.h</b> header
+file (/usr/include/Judy.h). <b>Note</b>: Callers should
+define JudySL arrays as type <b>Pvoid_t</b>, which can be
+passed by value to functions that take <b>Pcvoid_t</b>
+(constant <b>Pvoid_t</b>), and also by address to functions
+that take <b>PPvoid_t</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The return type
+from most <b>JudySL</b> functions is <b>PPvoid_t</b> so that
+the values stored in the array can be pointers to other
+objects, which is a typical usage, or cast to a <b>Word_t
+*</b> when a pointer to a value is required instead of a
+pointer to a pointer.</p>
+
+<a name="AUTHOR"></a>
+<h2>AUTHOR</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Judy was
+invented by Doug Baskins and implemented by
+Hewlett-Packard.</p>
+
+<a name="SEE ALSO"></a>
+<h2>SEE ALSO</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>Judy</i>(3),
+<i>Judy1</i>(3), <i>JudyL</i>(3), <i>JudySL</i>(3),
+<i>JudyHS</i>(3), <i><br>
+malloc()</i>, <br>
+the Judy website, <i>http://judy.sourceforge.net</i>, for
+more information and Application Notes.</p>
+<hr>
+</body>
+</html>
