@@ -3,7 +3,7 @@
 
 
 [package]
-name = "judy"
+name = "judy-wrap"
 description = "Judy arrays FFI mid-level binding"
 keywords = ["data-structures", "collections", "judy", "array", "sparse"]
 categories = ["data-structures", "external-ffi-bindings"]

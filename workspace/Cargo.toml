@@ -4,8 +4,8 @@
 
 [workspace]
 members = [
-	"judy",
 	"judy-sys",
+	"judy-wrap",
 ]
 
 [profile.release]
