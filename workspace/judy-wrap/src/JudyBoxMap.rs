@@ -34,7 +34,7 @@ impl<T> Drop for JudyBoxMap<T>
 
 impl<'a, T> IntoIterator for &'a JudyBoxMap<T>
 {
-    type Item = &'a T;
+    type Item = (c_ulong, &'a T);
     
 	type IntoIter = JudyBoxMapIterator<'a, T>;
 	
@@ -47,7 +47,7 @@ impl<'a, T> IntoIterator for &'a JudyBoxMap<T>
 
 impl<'a, T> IntoIterator for &'a mut JudyBoxMap<T>
 {
-    type Item = &'a mut T;
+    type Item = (c_ulong, &'a mut T);
     
 	type IntoIter = JudyBoxMapMutIterator<'a, T>;
 	
@@ -60,6 +60,18 @@ impl<'a, T> IntoIterator for &'a mut JudyBoxMap<T>
 
 impl<T> JudyBoxMap<T>
 {
+	#[inline(always)]
+	pub fn iter<'a>(&'a self) -> JudyBoxMapIterator<'a, T>
+	{
+		self.into_iter()
+	}
+	
+	#[inline(always)]
+	pub fn iter_mut<'a>(&'a mut self) -> JudyBoxMapMutIterator<'a, T>
+	{
+		self.into_iter()
+	}
+	
 	#[inline(always)]
 	pub fn count(&self) -> c_ulong
 	{

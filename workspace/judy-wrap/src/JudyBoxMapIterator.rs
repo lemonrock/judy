@@ -14,7 +14,7 @@ where T: 'a
 impl<'a, T> Iterator for JudyBoxMapIterator<'a, T>
 where T: 'a
 {
-	type Item = &'a T;
+	type Item = (c_ulong, &'a T);
 	
 	#[inline(always)]
     fn next(&mut self) -> Option<Self::Item>
@@ -25,8 +25,9 @@ where T: 'a
 		}
 		
 		let mutableReference = unsafe { *self.pointerToValue } as *mut T;
+		let index = self.index;
 		self.pointerToValue = unsafe { JudyLNext((self.judyBoxMap.0).0, &mut self.index, null_mut()) };
-		Some(unsafe { &*mutableReference })
+		Some((index, unsafe { &mut *mutableReference }))
 	}
 }
 
