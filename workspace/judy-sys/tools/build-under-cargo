@@ -180,10 +180,10 @@ build_under_cargo_copyHeadersToKnownLocationForEmbeddedCCodeInRust()
 
 build_under_cargo_outputCargoKeyValuePairs()
 {
-	printf 'cargo:rustc-link-lib=static-nobundle=Judy\n'
+	printf 'cargo:rustc-link-lib=static=Judy\n'
 	
 	# Search path
-	printf 'cargo:rustc-link-search=native=%s\n' "$judyLibFolderPath"
+	printf 'cargo:rustc-link-search=all=%s\n' "$judyLibFolderPath"
 	
 	# Not used by us, but useful for downstream potentially
 	printf 'cargo:root=%s\n' "$judyRootFolderPath"

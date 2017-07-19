@@ -10,7 +10,7 @@ clangAdditionalArguments=''
 headersFolderPath="$homeFolder"/compile-judy.conf.d/temporary/usr/include
 libFolderPath="$homeFolder"/compile-judy.conf.d/temporary/usr/lib
 link='Judy'
-link_kind='static-nobundle'
+link_kind='static'
 
 final_chance_to_tweak()
 {
