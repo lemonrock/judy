@@ -24,4 +24,6 @@ include!("Judy1.rs");
 include!("JudyBoxMap.rs");
 include!("JudyBoxMapIterator.rs");
 include!("JudyBoxMapMutIterator.rs");
+include!("JudyBoxMapValuesIterator.rs");
+include!("JudyBoxMapValuesMutIterator.rs");
 include!("JudyL.rs");

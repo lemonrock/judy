@@ -73,6 +73,18 @@ impl<T> JudyBoxMap<T>
 	}
 	
 	#[inline(always)]
+	pub fn values_iter<'a>(&'a self) -> JudyBoxMapValuesIterator<'a, T>
+	{
+		JudyBoxMapValuesIterator::new(self)
+	}
+	
+	#[inline(always)]
+	pub fn values_iter_mut<'a>(&'a mut self) -> JudyBoxMapValuesMutIterator<'a, T>
+	{
+		JudyBoxMapValuesMutIterator::new(self)
+	}
+	
+	#[inline(always)]
 	pub fn count(&self) -> c_ulong
 	{
 		self.0.count()

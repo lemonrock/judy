@@ -3,18 +3,18 @@
 
 
 #[derive(Debug)]
-pub struct JudyBoxMapIterator<'a, T>
+pub struct JudyBoxMapValuesMutIterator<'a, T>
 where T: 'a
 {
-	judyBoxMap: &'a JudyBoxMap<T>,
+	judyBoxMap: &'a mut JudyBoxMap<T>,
 	index: c_ulong,
 	pointerToValue: *mut *mut c_void,
 }
 
-impl<'a, T> Iterator for JudyBoxMapIterator<'a, T>
+impl<'a, T> Iterator for JudyBoxMapValuesMutIterator<'a, T>
 where T: 'a
 {
-	type Item = (c_ulong, &'a T);
+	type Item = &'a mut T;
 	
 	#[inline(always)]
     fn next(&mut self) -> Option<Self::Item>
@@ -25,17 +25,16 @@ where T: 'a
 		}
 		
 		let mutableReference = unsafe { *self.pointerToValue } as *mut T;
-		let index = self.index;
 		self.pointerToValue = unsafe { JudyLNext((self.judyBoxMap.0).0, &mut self.index, null_mut()) };
-		Some((index, unsafe { &*mutableReference }))
+		Some(unsafe { &mut *mutableReference })
 	}
 }
 
-impl<'a, T> JudyBoxMapIterator<'a, T>
+impl<'a, T> JudyBoxMapValuesMutIterator<'a, T>
 where T: 'a
 {
 	#[inline(always)]
-	fn new(judyBoxMap: &'a JudyBoxMap<T>) -> Self
+	fn new(judyBoxMap: &'a mut JudyBoxMap<T>) -> Self
 	{
 		let mut index = 0;
 		let pointerToValue = unsafe { JudyLFirst((judyBoxMap.0).0, &mut index, null_mut()) };
