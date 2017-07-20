@@ -3,8 +3,7 @@
 
 
 #![allow(non_snake_case)]
-#![allow(non_upper_case_globals)] 
-#![feature(associated_consts)]
+#![allow(non_upper_case_globals)]
 
 
 extern crate judy_sys;
