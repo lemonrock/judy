@@ -2,9 +2,9 @@
 // Copyright © 2016 The developers of judy. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/judy/master/COPYRIGHT.
 
 
-include!("bindgen/types/JError_t.rs");
-include!("bindgen/types/PJError_t.rs");
-include!("bindgen/types/PPvoid_t.rs");
-include!("bindgen/types/Pcvoid_t.rs");
-include!("bindgen/types/Pvoid_t.rs");
-include!("bindgen/types/Word_t.rs");
+include!("types/JError_t.rs");
+include!("types/PJError_t.rs");
+include!("types/PPvoid_t.rs");
+include!("types/Pcvoid_t.rs");
+include!("types/Pvoid_t.rs");
+include!("types/Word_t.rs");

@@ -2,4 +2,4 @@
 // Copyright © 2016 The developers of judy. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/judy/master/COPYRIGHT.
 
 
-include!("bindgen/enums/JU_Errno_t.rs");
+include!("enums/JU_Errno_t.rs");

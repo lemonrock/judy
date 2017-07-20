@@ -2,6 +2,6 @@
 // Copyright © 2016 The developers of judy. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/judy/master/COPYRIGHT.
 
 
-include!("bindgen/constants/JERR.rs");
-include!("bindgen/constants/JLAP_INVALID.rs");
-include!("bindgen/constants/JU_Errno_t_JU_ERRNO_NFMAX.rs");
+include!("constants/JERR.rs");
+include!("constants/JLAP_INVALID.rs");
+include!("constants/JU_Errno_t_JU_ERRNO_NFMAX.rs");

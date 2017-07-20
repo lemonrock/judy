@@ -114,11 +114,7 @@ _compile_judy_prepareForMacOSX_brewInstall()
 
 compile_judy_prepareForMacOSX()
 {
-	_compile_judy_prepareForMacOSX_brewInstall gnu-sed
 	_compile_judy_prepareForMacOSX_brewInstall make
-	_compile_judy_prepareForMacOSX_brewInstall libelf
-	_compile_judy_prepareForMacOSX_brewInstall coreutils
-	_compile_judy_prepareForMacOSX_brewInstall FiloSottile/musl-cross/musl-cross
 }
 
 compile_judy_parseCommandLine()
@@ -162,6 +158,7 @@ compile_judy_findFolderPaths()
 	cd - 1>/dev/null 2>/dev/null
 
 	configurationFolderPath="$homeFolderPath"/compile-judy.conf.d
+	bindgenWrapperConfigurationFolderPath="$homeFolderPath"/bindgen-wrapper.conf.d
 }
 
 compile_judy_platformSpecificPreparation()
@@ -179,13 +176,7 @@ compile_judy_platformSpecificPreparation()
 
 		Darwin)
 			compile_judy_prepareForMacOSX
-
-			compile_judy_ensureRequiredBinariesArePresent brew
-
-			export PATH="$(brew --prefix coreutils)"/libexec/gnubin:"$(brew --prefix gnu-sed)"/libexec/gnubin:"$PATH"
-
-			muslIncludeFolderPath="$(brew --prefix musl-cross)"/libexec/x86_64-linux-musl/include
-
+			
 			if [ $numberOfMakeJobs -eq 0 ]; then
 				compile_judy_ensureRequiredBinariesArePresent sysctl
 				numberOfMakeJobs="$(sysctl -n hw.ncpu)"
@@ -195,7 +186,6 @@ compile_judy_platformSpecificPreparation()
 
 		Linux)
 			compile_judy_ensureRequiredBinariesArePresent make sed x86_64-linux-musl-gcc x86_64-linux-musl-ar rm mkdir rsync cat
-			muslIncludeFolderPath='/usr/include'
 
 			if [ $numberOfMakeJobs -eq 0 ]; then
 				compile_judy_ensureRequiredBinariesArePresent grep
@@ -212,25 +202,37 @@ compile_judy_platformSpecificPreparation()
 
 compile_judy_createTemporaryFolder()
 {
-	temporaryFolderPath="$configurationFolderPath"/temporary
-	rm -rf "$temporaryFolderPath"
-	mkdir -m 0700 -p "$temporaryFolderPath"
+	if [ -z "${OUT_DIR+undefined}" ]; then
+		temporaryFolderPath="$bindgenWrapperConfigurationFolderPath"/temporary
+		rm -rf "$temporaryFolderPath"
+		mkdir -m 0700 -p "$temporaryFolderPath"
+	else
+		temporaryFolderPath="$OUT_DIR"
+	fi
+	
+	buildFolderPath="$temporaryFolderPath"/build
+	rm -rf "$buildFolderPath"
+	mkdir -m 0700 -p "$buildFolderPath"
+	
+	installRootFolderPath="$temporaryFolderPath"/root
+	rm -rf "$installRootFolderPath"
+	mkdir -m 0700 -p "$installRootFolderPath"
 }
 
 compile_judy_makeCopyToAlter()
 {
-	rsync --archive --quiet --exclude=.git "$homeFolderPath"/lib/judy/ "$temporaryFolderPath"/
+	rsync --archive --quiet --exclude=.git "$homeFolderPath"/lib/judy/ "$buildFolderPath"/
 }
 
 compile_judy_moderniseConfigSubAndConfigGuess()
 {
-	cp "$configurationFolderPath"/config/config.guess "$temporaryFolderPath"/
-	cp "$configurationFolderPath"/config/config.sub "$temporaryFolderPath"/
+	cp "$configurationFolderPath"/config/config.guess "$buildFolderPath"/
+	cp "$configurationFolderPath"/config/config.sub "$buildFolderPath"/
 }
 
 compile_judy_configureMakeMakeInstall()
 {
-	set -- --prefix="$temporaryFolderPath"/usr --enable-static --disable-shared --disable-dependency-tracking --enable-fast-install
+	set -- --prefix="$installRootFolderPath"/usr --enable-static --disable-shared --disable-dependency-tracking --enable-fast-install
 	if [ -z "${HOST+undefined}" ]; then
 		:
 	else
@@ -242,13 +244,13 @@ compile_judy_configureMakeMakeInstall()
 		set -- "$@" --host="$TARGET"
 	fi
 	
-	cd "$temporaryFolderPath" 1>/dev/null 2>/dev/null
+	cd "$buildFolderPath" 1>/dev/null 2>/dev/null
 	
 		CFLAGS='-O3 -g0' CXXFLAGS='-O3 -g0' ./configure "$@" 1>&2
 	
 	cd - 1>/dev/null 2>/dev/null
 	
-	cd "$temporaryFolderPath"/src 1>/dev/null 2>/dev/null
+	cd "$buildFolderPath"/src 1>/dev/null 2>/dev/null
 		
 		make 1>&2
 		
@@ -264,14 +266,16 @@ compile_judy_main()
 	local programFolderPath
 	local homeFolderPath
 	local configurationFolderPath
+	local bindgenWrapperConfigurationFolderPath
 	compile_judy_findFolderPaths
 
 	local platform
-	local muslIncludeFolderPath
 	local numberOfMakeJobs
 	compile_judy_platformSpecificPreparation
 
 	local temporaryFolderPath
+	local buildFolderPath
+	local installRootFolderPath
 	compile_judy_createTemporaryFolder
 	
 	compile_judy_makeCopyToAlter

@@ -16,7 +16,8 @@ fn main()
 	
 	// We deliberately run as much as possible outside of cargo as it makes it far easier to debug a long, complex build which has little to do with Rust.
 	// Of course, this script, being shell, won't run under Windows.
-	tool(&absoluteHomeFolderPath, "build-under-cargo");
+	
+	println!("{}", tool(&absoluteHomeFolderPath, "build-under-cargo"));
 }
 
 fn tool(absoluteHomeFolderPath: &str, programName: &'static str) -> String

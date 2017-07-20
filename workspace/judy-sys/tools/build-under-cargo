@@ -87,60 +87,13 @@ build_under_cargo_fail()
 	exit 1
 }
 
-_build_under_cargo_reRunIfChanged_print()
-{
-	local folderOrFilePath="$1"
-	printf 'cargo:rerun-if-changed=%s\n' "$folderOrFilePath"
-}
-
-_build_under_cargo_reRunIfChanged()
-{
-	local folderOrFilePath="$1"
-	
-	case "$folderOrFilePath" in
-		
-		*/temporary/*)
-			return 0
-		;;
-	
-	esac
-	
-	if [ -f "$folderOrFilePath" ]; then
-		_build_under_cargo_reRunIfChanged_print "$folderOrFilePath"
-	elif [ -d "$folderOrFilePath" ]; then
-		_build_under_cargo_reRunIfChanged_print "$folderOrFilePath"
-		
-		local child
-		set +f
-		for child in "$folderOrFilePath"/*
-		do
-			set -f
-			_build_under_cargo_reRunIfChanged "$child"
-		done
-		set f
-	fi
-}
-
-build_under_cargo_reRunIfAnyChanged()
-{
-	cd "$homeFolder" 1>/dev/null 2>/dev/null
-
-		local folderOrFilePath
-		for folderOrFilePath in "$@"
-		do
-			if [ -e "$folderOrFilePath" ]; then
-				_build_under_cargo_reRunIfChanged "$folderOrFilePath"
-			else
-				_build_under_cargo_reRunIfChanged_print "$folderOrFilePath"
-			fi
-		done
-		
-	cd - 1>/dev/null 2>/dev/null
-}
-
 build_under_cargo_determineJudyRootFolderPath()
 {
-	judyRootFolderPath="$homeFolder"/compile-judy.conf.d/temporary
+	if [ -z "${OUT_DIR+undefined}" ]; then
+		judyRootFolderPath="$homeFolder"/bindgen-wrapper.conf.d/temporary/root/usr
+	else
+		judyRootFolderPath="$OUT_DIR"/root/usr
+	fi
 		
 	if [ ! -d "$judyRootFolderPath" ]; then
 		needsCompilation='true'
@@ -150,7 +103,7 @@ build_under_cargo_determineJudyRootFolderPath()
 build_under_cargo_compileIfRequired()
 {
 	if $needsCompilation; then
-		"$homeFolder"/tools/compile-judy
+		"$homeFolder"/tools/compile-judy 1>&2
 	fi
 }
 
@@ -166,29 +119,48 @@ build_under_cargo_generatingRustBindingsToJudyIfRquired()
 	fi
 	
 	if $rebuildBindings; then
-		rm -rf "$rustBindingsFolderPath"
-		"$homeFolder"/tools/bindgen-wrapper/bindgen-wrapper
+		rm -rf "$rustBindingsFolderPath" 1>&2
+		"$homeFolder"/tools/bindgen-wrapper/bindgen-wrapper 1>&2
 	fi
 }
 
 build_under_cargo_copyHeadersToKnownLocationForEmbeddedCCodeInRust()
 {
-	rm -rf "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath"
-	mkdir -m 0700 -p "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath"
-	rsync --quiet --archive "$judyIncludeFolderPath"/ "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath"/
+	rm -rf "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath" 1>&2
+	mkdir -m 0700 -p "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath" 1>&2
+	rsync --quiet --archive "$judyIncludeFolderPath"/ "$copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath"/ 1>&2
 }
 
 build_under_cargo_outputCargoKeyValuePairs()
 {
 	printf 'cargo:rustc-link-lib=static=Judy\n'
 	
-	# Search path
-	printf 'cargo:rustc-link-search=all=%s\n' "$judyLibFolderPath"
+	printf 'cargo:rustc-link-search=native=%s\n' "$judyLibFolderPath"
 	
 	# Not used by us, but useful for downstream potentially
 	printf 'cargo:root=%s\n' "$judyRootFolderPath"
 	printf 'cargo:include=%s\n' "$judyIncludeFolderPath"
 	printf 'cargo:libdir=%s\n' "$judyLibFolderPath"
+	
+	printf 'cargo:rerun-if-changed=src/build.rs\n'
+
+	printf 'cargo:rerun-if-changed=compile-judy.conf.d/config\n'
+
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/header-overrides\n'
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/configuration.sh\n'
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/constant.mapping\n'
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/constant.types\n'
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/function.mapping\n'
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/preamble.rs\n'
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/static.mapping\n'
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/whitelist-function.regex\n'
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/whitelist-type.regex\n'
+	printf 'cargo:rerun-if-changed=bindgen-wrapper.conf.d/whitelist-var.regex\n'
+	
+	printf 'cargo:rerun-if-changed=tools/bindgen-wrapper/bindgen-wrapper\n'
+	printf 'cargo:rerun-if-changed=tools/build-under-cargo\n'
+	printf 'cargo:rerun-if-changed=tools/compile-judy\n'
+	printf 'cargo:rerun-if-changed=tools/recreate-bindings\n'
 }
 
 build_under_cargo_steps()
@@ -197,8 +169,8 @@ build_under_cargo_steps()
 	local needsCompilation='false'
 	build_under_cargo_determineJudyRootFolderPath
 	
-	local judyLibFolderPath="$judyRootFolderPath"/usr/lib
-	local judyIncludeFolderPath="$judyRootFolderPath"/usr/include
+	local judyLibFolderPath="$judyRootFolderPath"/lib
+	local judyIncludeFolderPath="$judyRootFolderPath"/include
 	local srcFolderPath="$homeFolder"/src
 	local rustBindingsFolderPath="$srcFolderPath"/bindgen
 	local copyHeadersToKnownLocationForEmbeddedCCodeInRustIncludeFolderPath="$srcFolderPath"/include
@@ -246,14 +218,7 @@ build_under_cargo_main()
 	cd "$programPath"/.. 1>/dev/null 2>/dev/null
 		local homeFolder="$(pwd)"
 	cd - 1>/dev/null 2>/dev/null
-	
-	if [ -z "{CARGO_MANIFEST_DIR+defined}" ]; then
-		:
-	else
-		export CARGO_MANIFEST_DIR="$homeFolder"
-		printf 'build-under-cargo:%s\n' "Whilst this script is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$CARGO_MANIFEST_DIR'" 1>&2
-	fi
-	
+		
 	build_under_cargo_steps
 }
 

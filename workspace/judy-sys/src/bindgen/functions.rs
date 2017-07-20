@@ -2,8 +2,8 @@
 // Copyright © 2016 The developers of judy. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/judy/master/COPYRIGHT.
 
 
-include!("bindgen/functions/Judy1.rs");
-include!("bindgen/functions/JudyHS.rs");
-include!("bindgen/functions/JudyL.rs");
-include!("bindgen/functions/JudyMemory.rs");
-include!("bindgen/functions/JudySL.rs");
+include!("functions/Judy1.rs");
+include!("functions/JudyHS.rs");
+include!("functions/JudyL.rs");
+include!("functions/JudyMemory.rs");
+include!("functions/JudySL.rs");

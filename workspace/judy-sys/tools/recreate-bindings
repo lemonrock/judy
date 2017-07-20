@@ -86,13 +86,14 @@ recreate_bindings_main()
 	rm -rf src/include
 	rm -rf tools/bindgen/wrapper/temporary
 	rm -rf compile-judy.conf.d/temporary
-	
-	cargo clean
+
 	rm -rf .cargo/target
+	rm -rf target
+	cargo clean
 	
 	tools/build-under-cargo
 	
-	tools/compile-on-mac-os-x-using-cargo build
+	cargo build --verbose
 }
 
 recreate_bindings_main "$@"

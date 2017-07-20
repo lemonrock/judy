@@ -7,8 +7,7 @@ rootIncludeFileName='Judy.h'
 macosXHomebrewPackageNames=''
 alpineLinuxPackageNames='rsync make gcc linux-headers libunwind-dev linux-grsec-dev'
 clangAdditionalArguments=''
-headersFolderPath="$homeFolder"/compile-judy.conf.d/temporary/usr/include
-libFolderPath="$homeFolder"/compile-judy.conf.d/temporary/usr/lib
+headersFolderPath='usr/include'
 link='Judy'
 link_kind='static'
 

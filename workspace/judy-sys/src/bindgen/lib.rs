@@ -12,14 +12,14 @@ use ::libc::c_uint;
 use ::libc::c_ulong;
 use ::libc::c_void;
 
-#[link(name = "Judy", kind = "static-nobundle")]
+#[link(name = "Judy", kind = "static")]
 extern "C"
 {
 }
 
-include!("bindgen/constants.rs");
-include!("bindgen/enums.rs");
-include!("bindgen/functions.rs");
-include!("bindgen/structs.rs");
-include!("bindgen/types.rs");
-include!("bindgen/opaques.rs");
+include!("constants.rs");
+include!("enums.rs");
+include!("functions.rs");
+include!("structs.rs");
+include!("types.rs");
+include!("opaques.rs");

@@ -2,4 +2,4 @@
 // Copyright © 2016 The developers of judy. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/judy/master/COPYRIGHT.
 
 
-include!("bindgen/structs/J_UDY_ERROR_STRUCT.rs");
+include!("structs/J_UDY_ERROR_STRUCT.rs");
