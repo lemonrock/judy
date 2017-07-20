@@ -13,7 +13,29 @@ documentation = "https://github.com/lemonrock/judy/blob/master/README.md"
 homepage = "https://github.com/lemonrock/judy-sys"
 repository = "https://github.com/lemonrock/judy.git"
 exclude = ["*"]
-include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "benches/**/*.rs", "examples/**/*.rs", "tests/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml", "lib/**/*", "src/**/*.h", "tools/**/*", "bindgen-wrapper.conf.d/**/*", "compile-*.conf.d/config/**/*"]
+include = [
+	"README.md",
+	"LICENSE",
+	"COPYRIGHT",
+	"Cargo.toml",
+	"rustfmt.toml",
+	"clippy.toml",
+	"lib/**/*",
+	"src/**/*.rs",
+	"src/**/*.h",
+	"tools/**/*",
+	"compile-*.conf.d/config/**/*",
+	"bindgen-wrapper.conf.d/header-overrides/**/*",
+	"bindgen-wrapper.conf.d/configuration.sh",
+	"bindgen-wrapper.conf.d/constant.mapping",
+	"bindgen-wrapper.conf.d/constant.types",
+	"bindgen-wrapper.conf.d/function.mapping",
+	"bindgen-wrapper.conf.d/preamble.rs",
+	"bindgen-wrapper.conf.d/static.mapping",
+	"bindgen-wrapper.conf.d/whitelist-function.regex",
+	"bindgen-wrapper.conf.d/whitelist-type.regex",
+	"bindgen-wrapper.conf.d/whitelist-var.regex"
+]
 links = "Judy"
 build = "src/build.rs"
 # Relative to Cargo.toml
